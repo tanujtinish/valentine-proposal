@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import './ProposalPage.css'
 
 const noMessages = [
@@ -14,39 +14,12 @@ const noMessages = [
   "Fine... I knew you'd say yes anyway! 😏",
 ]
 
-function fleeFrom(btn, mouseX, mouseY) {
-  const rect = btn.getBoundingClientRect()
-  const btnCX = rect.left + rect.width / 2
-  const btnCY = rect.top + rect.height / 2
-  const angle = Math.atan2(mouseY - btnCY, mouseX - btnCX)
-  const flee = 200 + Math.random() * 100
-
-  let nx = btnCX - Math.cos(angle) * flee - rect.width / 2
-  let ny = btnCY - Math.sin(angle) * flee - rect.height / 2
-
-  const pad = 15
-  const mxX = window.innerWidth - rect.width - pad
-  const mxY = window.innerHeight - rect.height - pad
-
-  // If pushed out of bounds, teleport to opposite area
-  if (nx < pad || nx > mxX) nx = pad + Math.random() * (mxX - pad)
-  if (ny < pad || ny > mxY) ny = pad + Math.random() * (mxY - pad)
-
-  nx = Math.max(pad, Math.min(mxX, nx))
-  ny = Math.max(pad, Math.min(mxY, ny))
-
-  btn.style.position = 'fixed'
-  btn.style.left = nx + 'px'
-  btn.style.top = ny + 'px'
-  btn.style.zIndex = '100'
-  btn.style.transition = 'left 0.3s cubic-bezier(0.34,1.56,0.64,1), top 0.3s cubic-bezier(0.34,1.56,0.64,1)'
-}
-
 export default function ProposalPage({ onYes }) {
   const [noCount, setNoCount] = useState(0)
   const [step, setStep] = useState(0)
   const [yesSize, setYesSize] = useState(1)
   const noRef = useRef(null)
+  const dodgeRef = useRef({ tx: 0, ty: 0, count: 0 })
 
   useEffect(() => {
     setTimeout(() => setStep(1), 300)
@@ -54,52 +27,96 @@ export default function ProposalPage({ onYes }) {
     setTimeout(() => setStep(3), 2200)
   }, [])
 
-  // Flee on mousemove — direct DOM, no React state
+  const nudge = useCallback((btn, mouseX, mouseY) => {
+    const d = dodgeRef.current
+    d.count++
+
+    const rect = btn.getBoundingClientRect()
+    const btnCX = rect.left + rect.width / 2
+    const btnCY = rect.top + rect.height / 2
+
+    // Direction away from cursor
+    const angle = Math.atan2(mouseY - btnCY, mouseX - btnCX)
+
+    // Small nudge: 30-50px base, slowly grows up to ~80px max
+    const dist = 30 + Math.min(d.count * 3, 50) + Math.random() * 20
+
+    // Random sideways wiggle for playfulness
+    const wiggle = (Math.random() - 0.5) * 25
+
+    // Calculate new translate offset (accumulates on current position)
+    let newTx = d.tx - Math.cos(angle) * dist + Math.sin(angle) * wiggle
+    let newTy = d.ty - Math.sin(angle) * dist - Math.cos(angle) * wiggle
+
+    // Clamp so it doesn't go off screen — check where it would end up
+    // Get the button's original (untranslated) position
+    const origLeft = rect.left - d.tx
+    const origTop = rect.top - d.ty
+    const pad = 15
+    const maxTx = window.innerWidth - origLeft - rect.width - pad
+    const minTx = -origLeft + pad
+    const maxTy = window.innerHeight - origTop - rect.height - pad
+    const minTy = -origTop + pad
+
+    newTx = Math.max(minTx, Math.min(maxTx, newTx))
+    newTy = Math.max(minTy, Math.min(maxTy, newTy))
+
+    d.tx = newTx
+    d.ty = newTy
+
+    btn.style.transform = `translate(${newTx}px, ${newTy}px)`
+  }, [])
+
+  // Dodge on mousemove
   useEffect(() => {
-    const RADIUS = 150
+    let lastDodge = 0
 
     const onMove = (e) => {
       const btn = noRef.current
       if (!btn) return
+
+      // Throttle: max once every 250ms
+      const now = Date.now()
+      if (now - lastDodge < 250) return
 
       const rect = btn.getBoundingClientRect()
       const cx = rect.left + rect.width / 2
       const cy = rect.top + rect.height / 2
       const dx = e.clientX - cx
       const dy = e.clientY - cy
+      const dist = Math.sqrt(dx * dx + dy * dy)
 
-      if (Math.sqrt(dx * dx + dy * dy) < RADIUS) {
-        fleeFrom(btn, e.clientX, e.clientY)
+      // Trigger when cursor is within 70px
+      if (dist < 70) {
+        lastDodge = now
+        nudge(btn, e.clientX, e.clientY)
       }
     }
 
     const onTouch = (e) => {
-      if (e.touches[0]) onMove(e.touches[0])
+      if (e.touches[0]) {
+        onMove({ clientX: e.touches[0].clientX, clientY: e.touches[0].clientY })
+      }
     }
 
     window.addEventListener('mousemove', onMove)
-    window.addEventListener('touchmove', onTouch)
+    window.addEventListener('touchmove', onTouch, { passive: true })
     return () => {
       window.removeEventListener('mousemove', onMove)
       window.removeEventListener('touchmove', onTouch)
     }
-  }, [])
+  }, [nudge])
 
   const handleNoClick = () => {
     const next = noCount + 1
     setNoCount(next)
     setYesSize((prev) => Math.min(prev + 0.3, 2.8))
 
-    // Also flee on click
     if (noRef.current) {
-      const pad = 30
-      const btn = noRef.current
-      const mxX = window.innerWidth - btn.offsetWidth - pad
-      const mxY = window.innerHeight - btn.offsetHeight - pad
-      btn.style.position = 'fixed'
-      btn.style.left = (pad + Math.random() * mxX) + 'px'
-      btn.style.top = (pad + Math.random() * mxY) + 'px'
-      btn.style.zIndex = '100'
+      nudge(noRef.current,
+        noRef.current.getBoundingClientRect().left + noRef.current.offsetWidth / 2,
+        noRef.current.getBoundingClientRect().top
+      )
     }
   }
 

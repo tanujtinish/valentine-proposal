@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import EnvelopePage from './components/EnvelopePage'
 import LandingPage from './components/LandingPage'
 import TimelinePage from './components/TimelinePage'
@@ -11,9 +11,62 @@ import './App.css'
 
 const PAGES = ['envelope', 'landing', 'timeline', 'distance', 'reasons', 'proposal', 'yes']
 
+function MusicPlayer({ audioRef }) {
+  const [playing, setPlaying] = useState(false)
+
+  // Sync state when audio starts playing (from auto-play)
+  useEffect(() => {
+    const audio = audioRef.current
+    if (!audio) return
+    const onPlay = () => setPlaying(true)
+    const onPause = () => setPlaying(false)
+    audio.addEventListener('play', onPlay)
+    audio.addEventListener('pause', onPause)
+    return () => {
+      audio.removeEventListener('play', onPlay)
+      audio.removeEventListener('pause', onPause)
+    }
+  }, [audioRef])
+
+  const toggle = () => {
+    const audio = audioRef.current
+    if (!audio) return
+    if (playing) {
+      audio.pause()
+    } else {
+      audio.play()
+    }
+  }
+
+  return (
+    <button className="music-btn" onClick={toggle} title={playing ? 'Pause music' : 'Play music'}>
+      {playing ? '🎵' : '🔇'}
+    </button>
+  )
+}
+
 function App() {
   const [page, setPage] = useState('envelope')
   const [transitioning, setTransitioning] = useState(false)
+  const audioRef = useRef(null)
+
+  // Auto-play music on first user interaction
+  useEffect(() => {
+    const startMusic = () => {
+      const audio = audioRef.current
+      if (audio && audio.paused) {
+        audio.play().catch(() => {})
+      }
+      window.removeEventListener('click', startMusic)
+      window.removeEventListener('touchstart', startMusic)
+    }
+    window.addEventListener('click', startMusic, { once: true })
+    window.addEventListener('touchstart', startMusic, { once: true })
+    return () => {
+      window.removeEventListener('click', startMusic)
+      window.removeEventListener('touchstart', startMusic)
+    }
+  }, [])
 
   const goTo = (p) => {
     setTransitioning(true)
@@ -30,6 +83,8 @@ function App() {
 
   return (
     <div className="app">
+      <audio ref={audioRef} src="/music.mp3" loop preload="auto" onLoadedMetadata={(e) => { e.target.currentTime = 30 }} />
+      <MusicPlayer audioRef={audioRef} />
       <FloatingHearts />
       <div
         key={page}
