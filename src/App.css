@@ -1,0 +1,27 @@
+.app {
+  min-height: 100vh;
+  position: relative;
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(120, 0, 80, 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(80, 0, 120, 0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 80%, rgba(150, 20, 60, 0.1) 0%, transparent 50%),
+    #080412;
+}
+
+/* Page transition wrapper */
+.page-transition {
+  animation: pageIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes pageIn {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.98);
+    filter: blur(4px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
