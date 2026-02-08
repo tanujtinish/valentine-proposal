@@ -10,11 +10,11 @@ import FloatingHearts from './components/FloatingHearts'
 import './App.css'
 
 const PAGES = ['envelope', 'landing', 'timeline', 'distance', 'reasons', 'proposal', 'yes']
+const MUSIC_START = 30
 
 function MusicPlayer({ audioRef }) {
   const [playing, setPlaying] = useState(false)
 
-  // Sync state when audio starts playing (from auto-play)
   useEffect(() => {
     const audio = audioRef.current
     if (!audio) return
@@ -34,7 +34,8 @@ function MusicPlayer({ audioRef }) {
     if (playing) {
       audio.pause()
     } else {
-      audio.play()
+      if (audio.currentTime < MUSIC_START) audio.currentTime = MUSIC_START
+      audio.play().catch(() => {})
     }
   }
 
@@ -50,11 +51,12 @@ function App() {
   const [transitioning, setTransitioning] = useState(false)
   const audioRef = useRef(null)
 
-  // Auto-play music on first user interaction
+  // Auto-play music on first user interaction + handle loop restart
   useEffect(() => {
     const startMusic = () => {
       const audio = audioRef.current
       if (audio && audio.paused) {
+        audio.currentTime = MUSIC_START
         audio.play().catch(() => {})
       }
       window.removeEventListener('click', startMusic)
@@ -62,9 +64,20 @@ function App() {
     }
     window.addEventListener('click', startMusic, { once: true })
     window.addEventListener('touchstart', startMusic, { once: true })
+
+    // When the track loops, jump back to MUSIC_START instead of 0
+    const audio = audioRef.current
+    const onSeeked = () => {
+      if (audio && audio.currentTime < MUSIC_START) {
+        audio.currentTime = MUSIC_START
+      }
+    }
+    if (audio) audio.addEventListener('seeked', onSeeked)
+
     return () => {
       window.removeEventListener('click', startMusic)
       window.removeEventListener('touchstart', startMusic)
+      if (audio) audio.removeEventListener('seeked', onSeeked)
     }
   }, [])
 
@@ -83,7 +96,7 @@ function App() {
 
   return (
     <div className="app">
-      <audio ref={audioRef} src="/music.mp3" loop preload="auto" onLoadedMetadata={(e) => { e.target.currentTime = 30 }} />
+      <audio ref={audioRef} src="/music.mp3" loop preload="auto" />
       <MusicPlayer audioRef={audioRef} />
       <FloatingHearts />
       <div
