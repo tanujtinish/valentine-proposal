@@ -71,11 +71,11 @@ export default function DistancePage({ onNext }) {
 
         {/* Messages that fade in one by one */}
         <p className={`distance-msg ${step >= 3 ? 'show' : ''}`}>
-          But distance is just a number...
+          But those 4 days in Delhi proved something...
         </p>
 
         <p className={`distance-msg highlight ${step >= 4 ? 'show' : ''}`}>
-          Because every single kilometer is worth it for you, Sonali.
+          No distance could ever keep us apart, Sonali.
         </p>
 
         <div className={`distance-quote ${step >= 5 ? 'show' : ''}`}>

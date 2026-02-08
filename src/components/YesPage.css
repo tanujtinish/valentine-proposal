@@ -6,7 +6,7 @@
   position: relative;
   z-index: 1;
   cursor: pointer;
-  background: radial-gradient(ellipse at 50% 40%, rgba(120, 0, 80, 0.12) 0%, transparent 60%);
+  background: radial-gradient(ellipse at 50% 40%, rgba(140, 30, 80, 0.12) 0%, transparent 60%);
   overflow: hidden;
   padding: 20px;
 }
@@ -53,7 +53,7 @@
   font-size: 75px;
   display: inline-block;
   animation: heartbeatFast 0.8s ease-in-out infinite;
-  filter: drop-shadow(0 0 25px rgba(255, 100, 150, 0.5));
+  filter: drop-shadow(0 0 25px rgba(232, 80, 122, 0.5));
 }
 
 @keyframes celebBounce {
@@ -74,7 +74,7 @@
   font-family: 'Dancing Script', cursive;
   font-size: 4.8rem;
   font-weight: 700;
-  background: linear-gradient(135deg, #ffd54f, #ff6b9d, #e040fb, #7c4dff, #ffd54f);
+  background: linear-gradient(135deg, #f0c27f, #e8507a, #c94b8a, #8b5cf6, #f0c27f);
   background-size: 400% 400%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -138,7 +138,7 @@
   position: absolute;
   inset: -12px;
   border-radius: 50%;
-  background: conic-gradient(from 0deg, #ff6b9d, #ffd54f, #e040fb, #7c4dff, #69f0ae, #ff6b9d);
+  background: conic-gradient(from 0deg, #e8507a, #f0c27f, #c94b8a, #8b5cf6, #69f0ae, #e8507a);
   animation: glowRotate 3s linear infinite;
   filter: blur(8px);
   opacity: 0.6;
@@ -152,10 +152,11 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center 20%;
   border-radius: 50%;
   position: relative;
   z-index: 2;
-  border: 3px solid rgba(8, 4, 18, 0.9);
+  border: 3px solid rgba(10, 5, 20, 0.9);
 }
 
 /* Carousel */
@@ -175,7 +176,7 @@
 
 .carousel-msg {
   font-size: 1.1rem;
-  color: #ffa4c4;
+  color: #f4a4bf;
   font-style: italic;
   animation: msgSlide 0.6s ease;
   max-width: 420px;
@@ -231,14 +232,14 @@
 
 @keyframes coupleGlow {
   0%, 100% { transform: scale(1); filter: brightness(1); }
-  50% { transform: scale(1.4); filter: brightness(1.4) drop-shadow(0 0 18px rgba(255, 107, 157, 0.6)); }
+  50% { transform: scale(1.4); filter: brightness(1.4) drop-shadow(0 0 18px rgba(232, 80, 122, 0.6)); }
 }
 
 .forever-text {
   font-family: 'Dancing Script', cursive;
   font-size: 2.2rem;
-  color: #ffd54f;
-  filter: drop-shadow(0 0 20px rgba(255, 213, 79, 0.25));
+  color: #f0c27f;
+  filter: drop-shadow(0 0 20px rgba(240, 194, 127, 0.25));
 }
 
 /* Tap */
@@ -266,10 +267,10 @@
 .secret-msg {
   font-family: 'Dancing Script', cursive;
   font-size: 1.8rem;
-  color: #ffd54f;
+  color: #f0c27f;
   margin-top: 22px;
   animation: secretPop 1s cubic-bezier(0.34, 1.56, 0.64, 1);
-  filter: drop-shadow(0 0 25px rgba(255, 213, 79, 0.3));
+  filter: drop-shadow(0 0 25px rgba(240, 194, 127, 0.3));
 }
 
 @keyframes secretPop {

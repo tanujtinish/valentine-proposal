@@ -21,7 +21,7 @@
 .orb-1 {
   width: 400px;
   height: 400px;
-  background: rgba(255, 60, 120, 0.08);
+  background: rgba(232, 80, 122, 0.08);
   top: -100px;
   right: -100px;
   animation: orbDrift1 12s ease-in-out infinite;
@@ -30,7 +30,7 @@
 .orb-2 {
   width: 350px;
   height: 350px;
-  background: rgba(140, 60, 255, 0.06);
+  background: rgba(139, 92, 246, 0.06);
   bottom: -80px;
   left: -80px;
   animation: orbDrift2 15s ease-in-out infinite;
@@ -39,7 +39,7 @@
 .orb-3 {
   width: 250px;
   height: 250px;
-  background: rgba(255, 180, 80, 0.05);
+  background: rgba(240, 194, 127, 0.05);
   top: 40%;
   left: 50%;
   animation: orbDrift3 10s ease-in-out infinite;
@@ -88,7 +88,7 @@
   font-size: 72px;
   display: inline-block;
   animation: heartbeat 1.2s ease-in-out infinite;
-  filter: drop-shadow(0 0 20px rgba(255, 100, 150, 0.5));
+  filter: drop-shadow(0 0 20px rgba(232, 80, 122, 0.5));
 }
 
 .p-side-heart {
@@ -118,7 +118,7 @@
   font-family: 'Dancing Script', cursive;
   font-size: 3.8rem;
   font-weight: 700;
-  background: linear-gradient(135deg, #ff6b9d, #ffa4c4, #ffd54f, #ff6b9d);
+  background: linear-gradient(135deg, #e8507a, #f4a4bf, #f0c27f, #e8507a);
   background-size: 300% 300%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;

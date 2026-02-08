@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import './ProposalPage.css'
 
 const noMessages = [
@@ -7,21 +7,46 @@ const noMessages = [
   "Really sure?? 😭",
   "Sonali pls 💔",
   "Think again! 🥹",
-  "I'll fly to Mumbai to ask in person! ✈️",
+  "Remember those 4 days in Delhi? 🏙️",
+  "I'm flying back in March anyway! ✈️",
   "I'll tell your IIM K batchmates 😏",
   "Don't make this SWE debug heartbreak 💻💔",
-  "I'll send my twin to convince you 👯",
   "Fine... I knew you'd say yes anyway! 😏",
 ]
+
+function fleeFrom(btn, mouseX, mouseY) {
+  const rect = btn.getBoundingClientRect()
+  const btnCX = rect.left + rect.width / 2
+  const btnCY = rect.top + rect.height / 2
+  const angle = Math.atan2(mouseY - btnCY, mouseX - btnCX)
+  const flee = 200 + Math.random() * 100
+
+  let nx = btnCX - Math.cos(angle) * flee - rect.width / 2
+  let ny = btnCY - Math.sin(angle) * flee - rect.height / 2
+
+  const pad = 15
+  const mxX = window.innerWidth - rect.width - pad
+  const mxY = window.innerHeight - rect.height - pad
+
+  // If pushed out of bounds, teleport to opposite area
+  if (nx < pad || nx > mxX) nx = pad + Math.random() * (mxX - pad)
+  if (ny < pad || ny > mxY) ny = pad + Math.random() * (mxY - pad)
+
+  nx = Math.max(pad, Math.min(mxX, nx))
+  ny = Math.max(pad, Math.min(mxY, ny))
+
+  btn.style.position = 'fixed'
+  btn.style.left = nx + 'px'
+  btn.style.top = ny + 'px'
+  btn.style.zIndex = '100'
+  btn.style.transition = 'left 0.3s cubic-bezier(0.34,1.56,0.64,1), top 0.3s cubic-bezier(0.34,1.56,0.64,1)'
+}
 
 export default function ProposalPage({ onYes }) {
   const [noCount, setNoCount] = useState(0)
   const [step, setStep] = useState(0)
   const [yesSize, setYesSize] = useState(1)
-  const [noPos, setNoPos] = useState(null)
   const noRef = useRef(null)
-  const containerRef = useRef(null)
-  const FLEE_RADIUS = 150
 
   useEffect(() => {
     setTimeout(() => setStep(1), 300)
@@ -29,87 +54,57 @@ export default function ProposalPage({ onYes }) {
     setTimeout(() => setStep(3), 2200)
   }, [])
 
-  // Track mouse and make No button flee immediately on hover
-  const handleMouseMove = useCallback((e) => {
-    if (!noRef.current) return
+  // Flee on mousemove — direct DOM, no React state
+  useEffect(() => {
+    const RADIUS = 150
 
-    const btn = noRef.current
-    const rect = btn.getBoundingClientRect()
-    const btnCenterX = rect.left + rect.width / 2
-    const btnCenterY = rect.top + rect.height / 2
+    const onMove = (e) => {
+      const btn = noRef.current
+      if (!btn) return
 
-    const dx = e.clientX - btnCenterX
-    const dy = e.clientY - btnCenterY
-    const dist = Math.sqrt(dx * dx + dy * dy)
+      const rect = btn.getBoundingClientRect()
+      const cx = rect.left + rect.width / 2
+      const cy = rect.top + rect.height / 2
+      const dx = e.clientX - cx
+      const dy = e.clientY - cy
 
-    if (dist < FLEE_RADIUS) {
-      // Flee away from cursor
-      const angle = Math.atan2(dy, dx)
-      const fleeDistance = FLEE_RADIUS + 80 + Math.random() * 60
-      let newX = btnCenterX - Math.cos(angle) * fleeDistance - rect.width / 2
-      let newY = btnCenterY - Math.sin(angle) * fleeDistance - rect.height / 2
+      if (Math.sqrt(dx * dx + dy * dy) < RADIUS) {
+        fleeFrom(btn, e.clientX, e.clientY)
+      }
+    }
 
-      // Keep within viewport
-      const pad = 10
-      const maxX = window.innerWidth - rect.width - pad
-      const maxY = window.innerHeight - rect.height - pad
-      if (newX < pad) newX = maxX - Math.random() * 200
-      if (newX > maxX) newX = pad + Math.random() * 200
-      if (newY < pad) newY = maxY - Math.random() * 200
-      if (newY > maxY) newY = pad + Math.random() * 200
+    const onTouch = (e) => {
+      if (e.touches[0]) onMove(e.touches[0])
+    }
 
-      newX = Math.max(pad, Math.min(maxX, newX))
-      newY = Math.max(pad, Math.min(maxY, newY))
-
-      setNoPos({ x: newX, y: newY })
+    window.addEventListener('mousemove', onMove)
+    window.addEventListener('touchmove', onTouch)
+    return () => {
+      window.removeEventListener('mousemove', onMove)
+      window.removeEventListener('touchmove', onTouch)
     }
   }, [])
-
-  useEffect(() => {
-    window.addEventListener('mousemove', handleMouseMove)
-    return () => window.removeEventListener('mousemove', handleMouseMove)
-  }, [handleMouseMove])
-
-  // Also flee on touch (mobile)
-  const handleTouchMove = useCallback((e) => {
-    if (!noRef.current || !e.touches[0]) return
-    handleMouseMove({ clientX: e.touches[0].clientX, clientY: e.touches[0].clientY })
-  }, [handleMouseMove])
-
-  useEffect(() => {
-    window.addEventListener('touchmove', handleTouchMove)
-    return () => window.removeEventListener('touchmove', handleTouchMove)
-  }, [handleTouchMove])
 
   const handleNoClick = () => {
     const next = noCount + 1
     setNoCount(next)
     setYesSize((prev) => Math.min(prev + 0.3, 2.8))
 
-    // Immediately jump somewhere random after click
-    const pad = 30
-    const maxX = window.innerWidth - 160 - pad
-    const maxY = window.innerHeight - 60 - pad
-    setNoPos({ x: pad + Math.random() * maxX, y: pad + Math.random() * maxY })
+    // Also flee on click
+    if (noRef.current) {
+      const pad = 30
+      const btn = noRef.current
+      const mxX = window.innerWidth - btn.offsetWidth - pad
+      const mxY = window.innerHeight - btn.offsetHeight - pad
+      btn.style.position = 'fixed'
+      btn.style.left = (pad + Math.random() * mxX) + 'px'
+      btn.style.top = (pad + Math.random() * mxY) + 'px'
+      btn.style.zIndex = '100'
+    }
   }
 
-  const noStyle = noPos
-    ? {
-        position: 'fixed',
-        left: `${noPos.x}px`,
-        top: `${noPos.y}px`,
-        zIndex: 100,
-        transition: 'left 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), top 0.25s cubic-bezier(0.34, 1.56, 0.64, 1)',
-        fontSize: `${Math.max(0.55, 1 - noCount * 0.06)}rem`,
-        opacity: Math.max(0.35, 1 - noCount * 0.06),
-      }
-    : {
-        fontSize: `${Math.max(0.55, 1 - noCount * 0.06)}rem`,
-        opacity: Math.max(0.35, 1 - noCount * 0.06),
-      }
-
   return (
-    <div className="proposal-page" ref={containerRef}>
+    <div className="proposal-page">
       {/* Ambient orbs */}
       <div className="ambient-orb orb-1" />
       <div className="ambient-orb orb-2" />
@@ -127,7 +122,7 @@ export default function ProposalPage({ onYes }) {
         </h1>
 
         <p className={`proposal-sub ${step >= 2 ? 'show' : ''}`}>
-          From Bathinda classmates to this moment ✨
+          From Bathinda classmates to Delhi nights to this moment ✨
         </p>
 
         {noCount > 0 && (
@@ -155,7 +150,10 @@ export default function ProposalPage({ onYes }) {
             ref={noRef}
             className="no-button"
             onClick={handleNoClick}
-            style={noStyle}
+            style={{
+              fontSize: `${Math.max(0.55, 1 - noCount * 0.06)}rem`,
+              opacity: Math.max(0.35, 1 - noCount * 0.06),
+            }}
           >
             {noCount === 0 ? "No 😢" : noMessages[Math.min(noCount, noMessages.length - 1)]}
           </button>

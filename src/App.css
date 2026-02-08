@@ -2,10 +2,11 @@
   min-height: 100vh;
   position: relative;
   background:
-    radial-gradient(ellipse at 20% 50%, rgba(120, 0, 80, 0.15) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 20%, rgba(80, 0, 120, 0.12) 0%, transparent 50%),
-    radial-gradient(ellipse at 50% 80%, rgba(150, 20, 60, 0.1) 0%, transparent 50%),
-    #080412;
+    radial-gradient(ellipse at 15% 50%, rgba(140, 30, 80, 0.14) 0%, transparent 50%),
+    radial-gradient(ellipse at 85% 20%, rgba(90, 20, 140, 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 85%, rgba(180, 40, 70, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(60, 10, 90, 0.06) 0%, transparent 70%),
+    #0a0514;
 }
 
 /* Page transition wrapper */

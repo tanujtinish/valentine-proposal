@@ -20,7 +20,7 @@ export default function LandingPage({ onNext }) {
         {/* Photo */}
         <div className={`photo-frame ${step >= 1 ? 'show' : ''}`}>
           <div className="photo-glow" />
-          <img src="/photos/photo1.jpg" alt="Sonali" className="hero-photo" />
+          <img src="/photos/1.jpg" alt="Sonali" className="hero-photo" />
           <div className="photo-border" />
         </div>
 

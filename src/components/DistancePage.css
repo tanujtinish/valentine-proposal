@@ -79,7 +79,7 @@
 .path-line {
   width: 100%;
   height: 1px;
-  background: linear-gradient(90deg, rgba(255, 107, 157, 0.4), rgba(124, 77, 255, 0.4), rgba(255, 107, 157, 0.4));
+  background: linear-gradient(90deg, rgba(232, 80, 122, 0.4), rgba(139, 92, 246, 0.4), rgba(232, 80, 122, 0.4));
   position: absolute;
 }
 
@@ -88,7 +88,7 @@
   left: -10px;
   font-size: 22px;
   opacity: 0;
-  filter: drop-shadow(0 0 8px rgba(255, 200, 100, 0.5));
+  filter: drop-shadow(0 0 8px rgba(240, 194, 127, 0.5));
 }
 
 .plane.flying {
@@ -142,14 +142,14 @@
 .counter-number {
   font-size: 5rem;
   font-weight: 700;
-  background: linear-gradient(135deg, #ffd54f, #ff6b9d);
+  background: linear-gradient(135deg, #f0c27f, #e8507a);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   display: block;
   line-height: 1;
   letter-spacing: -2px;
-  filter: drop-shadow(0 0 20px rgba(255, 213, 79, 0.15));
+  filter: drop-shadow(0 0 20px rgba(240, 194, 127, 0.15));
 }
 
 .counter-unit {
@@ -179,7 +179,7 @@
 .distance-msg.highlight {
   font-family: 'Dancing Script', cursive;
   font-size: 1.7rem;
-  color: #ffa4c4;
+  color: #f4a4bf;
   margin-bottom: 35px;
 }
 
@@ -188,7 +188,7 @@
   background: rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border-left: 2px solid rgba(255, 107, 157, 0.5);
+  border-left: 2px solid rgba(232, 80, 122, 0.5);
   border-right: 1px solid rgba(255, 255, 255, 0.04);
   border-top: 1px solid rgba(255, 255, 255, 0.04);
   border-bottom: 1px solid rgba(255, 255, 255, 0.04);
@@ -223,7 +223,7 @@
 
 /* Button */
 .distance-page .next-btn {
-  background: linear-gradient(135deg, #ff6b9d, #c44569);
+  background: linear-gradient(135deg, #e8507a, #b83a5c);
   color: white;
   border: none;
   padding: 16px 40px;
@@ -235,7 +235,7 @@
   opacity: 0;
   transform: translateY(20px);
   transition: all 0.8s ease;
-  box-shadow: 0 4px 25px rgba(255, 107, 157, 0.3);
+  box-shadow: 0 4px 25px rgba(232, 80, 122, 0.3);
   position: relative;
   overflow: hidden;
 }
@@ -247,7 +247,7 @@
 
 .distance-page .next-btn:hover {
   transform: translateY(-3px) scale(1.04);
-  box-shadow: 0 8px 35px rgba(255, 107, 157, 0.45);
+  box-shadow: 0 8px 35px rgba(232, 80, 122, 0.45);
 }
 
 /* Stars */

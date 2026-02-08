@@ -66,11 +66,12 @@ function Confetti() {
 const loveMessages = [
   "From Bathinda to forever 💓",
   "7,195 km is nothing when you're my everything 🌍",
-  "Every love story is beautiful, but ours is my favourite 📖",
+  "Those 4 days in Delhi changed my life 🏙️",
   "You had me at 'class of 2009' 🏫",
-  "My Meta data says I'm 100% yours 💻❤️",
-  "Strategy consultant, but you've already won my heart 🏆",
+  "March can't come soon enough ✈️🇮🇳",
   "Two cities, one heartbeat 🇬🇧❤️🇮🇳",
+  "Every moment with you in Delhi was magic ✨",
+  "My Meta data says I'm 100% yours 💻❤️",
 ]
 
 export default function YesPage() {
@@ -127,7 +128,7 @@ export default function YesPage() {
         {/* Photo with glow */}
         <div className={`yes-photo-wrap ${step >= 2 ? 'show' : ''}`}>
           <div className="yes-photo-glow" />
-          <img src="/photos/photo1.jpg" alt="Us" className="yes-photo" />
+          <img src="/photos/now.jpg" alt="Us" className="yes-photo" />
         </div>
 
         <div className={`love-carousel ${step >= 3 ? 'show' : ''}`}>
@@ -153,7 +154,7 @@ export default function YesPage() {
 
         {clickCount >= 14 && (
           <p className="secret-msg">
-            I love you to the moon and back — and then some more 🚀🌙
+            Can't wait to hold you again in March 🚀🇮🇳💕
           </p>
         )}
       </div>

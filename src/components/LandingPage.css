@@ -38,7 +38,7 @@
   position: absolute;
   inset: -10px;
   border-radius: 50%;
-  background: conic-gradient(from 0deg, #ff6b9d, #ffd54f, #e040fb, #7c4dff, #ff6b9d);
+  background: conic-gradient(from 0deg, #e8507a, #f0c27f, #c94b8a, #8b5cf6, #e8507a);
   animation: glowSpin 6s linear infinite;
   filter: blur(6px);
   opacity: 0.7;
@@ -52,10 +52,11 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center 20%;
   border-radius: 50%;
   position: relative;
   z-index: 2;
-  border: 3px solid rgba(8, 4, 18, 0.9);
+  border: 3px solid rgba(10, 5, 20, 0.9);
   box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1);
 }
 
@@ -63,7 +64,7 @@
   position: absolute;
   inset: -5px;
   border-radius: 50%;
-  background: conic-gradient(from 0deg, #ff6b9d, #ffd54f, #e040fb, #7c4dff, #ff6b9d);
+  background: conic-gradient(from 0deg, #e8507a, #f0c27f, #c94b8a, #8b5cf6, #e8507a);
   z-index: 1;
   animation: glowSpin 6s linear infinite;
 }
@@ -73,7 +74,7 @@
   font-family: 'Dancing Script', cursive;
   font-size: 5rem;
   font-weight: 700;
-  background: linear-gradient(135deg, #ff6b9d, #ffa4c4, #ffd54f, #ff6b9d);
+  background: linear-gradient(135deg, #e8507a, #f4a4bf, #f0c27f, #e8507a);
   background-size: 300% 300%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -113,7 +114,7 @@
   font-size: 1.2rem;
   color: rgba(255, 255, 255, 0.5);
   font-weight: 300;
-  border-right: 2px solid rgba(255, 107, 157, 0.6);
+  border-right: 2px solid rgba(232, 80, 122, 0.6);
   white-space: nowrap;
   overflow: hidden;
   animation: typing 2.5s steps(40) forwards, blink 0.8s step-end infinite;
@@ -132,7 +133,7 @@
 
 /* Button */
 .next-btn {
-  background: linear-gradient(135deg, #ff6b9d, #c44569);
+  background: linear-gradient(135deg, #e8507a, #b83a5c);
   color: white;
   border: none;
   padding: 16px 40px;
@@ -148,7 +149,7 @@
   overflow: hidden;
   letter-spacing: 0.3px;
   box-shadow:
-    0 4px 25px rgba(255, 107, 157, 0.3),
+    0 4px 25px rgba(232, 80, 122, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
@@ -176,7 +177,7 @@
 .next-btn:hover {
   transform: translateY(-3px) scale(1.04);
   box-shadow:
-    0 8px 35px rgba(255, 107, 157, 0.45),
+    0 8px 35px rgba(232, 80, 122, 0.45),
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 

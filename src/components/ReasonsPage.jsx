@@ -5,8 +5,8 @@ const reasons = [
   { emoji: '😊', title: 'Your Smile', text: 'The one that makes everything else disappear' },
   { emoji: '🧠', title: 'Your Brilliance', text: 'Strategy consultant who outsmarts everyone in the room' },
   { emoji: '💪', title: 'Your Ambition', text: 'From Bathinda to IIM K to Accenture Strategy — unstoppable' },
-  { emoji: '🤣', title: 'Your Laugh', text: 'The sound I want to hear every single day' },
-  { emoji: '🦋', title: 'The Butterflies', text: 'Still there, after all these years' },
+  { emoji: '🤣', title: 'Your Laugh', text: 'The sound that echoed through Delhi streets for 4 perfect days' },
+  { emoji: '🦋', title: 'The Butterflies', text: 'They hit different after those 4 days together' },
   { emoji: '🌟', title: 'Everything Else', text: "The way you talk, think, care — I could go on forever" },
 ]
 
@@ -42,6 +42,12 @@ export default function ReasonsPage({ onNext }) {
       <p className={`reasons-sub ${showIntro ? 'show' : ''}`}>
         Tap each card to reveal 💝
       </p>
+
+      {/* Her photo */}
+      <div className={`reasons-photo-wrap ${showIntro ? 'show' : ''}`}>
+        <div className="reasons-photo-glow" />
+        <img src="/photos/2.jpg" alt="Sonali" className="reasons-photo" />
+      </div>
 
       <div className="reasons-grid">
         {reasons.map((r, i) => (
